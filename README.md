@@ -95,11 +95,8 @@ int main(int argc, char** argv) {
 #elif Radeon_pro_vii
     const uint64_t iterations = 19762000ULL;
 #else
-    // Default for 7600x node: trim GPU 4 specifically to eliminate thermal lag
+    // Default for 7600x node
     uint64_t iterations = 20000000ULL;
-    if (gpu_id == 4) {
-        iterations = 19943000ULL;
-    }
 #endif
 ...
 }
