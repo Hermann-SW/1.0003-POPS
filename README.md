@@ -42,6 +42,7 @@ double run_mpi_benchmark_pass(int mpi_rank, int mpi_size, PrecisionMode mode,
     ...
     double aggregate_throughput = (sum_ops / wall_seconds) / 1e12;
     ...
+    return aggregate_throughput;
 }
 ```
 
