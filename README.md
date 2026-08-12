@@ -17,7 +17,8 @@ Created with free gemini.google.com in many iterations.
 =============================================================================
 ```
 
-Time for combined performance is measured after last GPU finished its synthetic benchmark:
+Time for combined performance is measured after last GPU finished its synthetic benchmark.  
+```sum_ops``` is sum of operations on all (10) GPUs.
 ```cpp
 double run_mpi_benchmark_pass(int mpi_rank, int mpi_size, PrecisionMode mode, 
                               const std::string& label, uint64_t iterations, 
@@ -37,6 +38,8 @@ double run_mpi_benchmark_pass(int mpi_rank, int mpi_size, PrecisionMode mode,
     MPI_Barrier(MPI_COMM_WORLD);
     double wall_stop = MPI_Wtime();
     double wall_seconds = wall_stop - wall_start;
+    ...
+    double aggregate_throughput = (sum_ops / wall_seconds) / 1e12;
     ...
 }
 ```
