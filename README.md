@@ -58,13 +58,13 @@ hermann@7600x:~/1.0003-POPS$
 - 8× Instinct MI50 (on 7600x)
 - 1× GPU (on Radeon-vii)
 - 1× GPU (on Radeon-pro-vii)
-```bash
-pi@raspberrypi5:~/1.0003-POPS $ cat cluster_hosts 
+
+[cluster_hosts](cluster_hosts)  
+```
 # cluster_hosts
 7600x slots=1
 Radeon-vii slots=1
 Radeon-pro-vii slots=1
-pi@raspberrypi5:~/1.0003-POPS $ 
 ```
 
 ## deploy
