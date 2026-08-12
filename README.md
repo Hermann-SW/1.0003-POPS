@@ -45,6 +45,7 @@ double run_mpi_benchmark_pass(int mpi_rank, int mpi_size, PrecisionMode mode,
 ```
 
 ## start ssh-agent
+For password-less copying and mpirun. 
 ```bash
 hermann@7600x:~$ cd 1.0003-POPS/
 hermann@7600x:~/1.0003-POPS$ source start_agent.source 
