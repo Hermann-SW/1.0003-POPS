@@ -4,6 +4,8 @@
 - on three workstations
 - with OpenMPI
 
+Created with free gemini.google.com in many iterations.
+
 ## summary
 ```
 =============================================================================
