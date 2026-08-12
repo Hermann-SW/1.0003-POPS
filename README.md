@@ -46,6 +46,23 @@ double run_mpi_benchmark_pass(int mpi_rank, int mpi_size, PrecisionMode mode,
 }
 ```
 
+```AMD Radeon VII``` is slightly faster than ```AMD Instinct MI50/MI60``` GPUs, and ```AMD Radeon (TM) Pro VII``` is slightly slower. Work is distributed slightly uneven in order to pass 1 POPS mark:
+```cpp
+int main(int argc, char** argv) {
+...
+#ifdef Radeon_vii
+    const uint64_t iterations = 20472000ULL;
+#elif Radeon_pro_vii
+    const uint64_t iterations = 19762000ULL;
+#else
+    // Default for 7600x node
+    uint64_t iterations = 20000000ULL;
+#endif
+...
+}
+```
+
+
 ## start ssh-agent
 For password-less copying and mpirun. 
 ```bash
@@ -86,22 +103,6 @@ hermann@7600x:~/1.0003-POPS$
 ```
 
 ## mpirun
-```AMD Radeon VII``` is slightly faster than ```AMD Instinct MI50/MI60``` GPUs, and ```AMD Radeon (TM) Pro VII``` is slightly slower. Work is distributed slightly uneven in order to pass 1 POPS mark:
-```cpp
-int main(int argc, char** argv) {
-...
-#ifdef Radeon_vii
-    const uint64_t iterations = 20472000ULL;
-#elif Radeon_pro_vii
-    const uint64_t iterations = 19762000ULL;
-#else
-    // Default for 7600x node
-    uint64_t iterations = 20000000ULL;
-#endif
-...
-}
-```
-
 ```bash
 hermann@7600x:~/1.0003-POPS$ make mpirun
 mpirun --mca btl_tcp_if_include 192.168.178.0/24 -np 3 --hostfile cluster_hosts ./run_node.sh ./gfx906_mpi_multi_precision_bench
