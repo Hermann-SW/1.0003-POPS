@@ -3,6 +3,7 @@
 - on 8× Instinct MI50, 1× Radeon vii and 1× Radeon pro vii GPUs
 - on three workstations
 - with OpenMPI
+- and ```std::thread``` for multi-GPU workstations
 
 Created with free gemini.google.com in many iterations.
 
