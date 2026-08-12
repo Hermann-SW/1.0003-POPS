@@ -51,12 +51,12 @@ double run_mpi_benchmark_pass(int mpi_rank, int mpi_size, PrecisionMode mode,
 int main(int argc, char** argv) {
 ...
 #ifdef Radeon_vii
-    const uint64_t iterations = 20472000ULL;
+    const uint64_t iterations = 2047200ULL;
 #elif Radeon_pro_vii
-    const uint64_t iterations = 19762000ULL;
+    const uint64_t iterations = 1976200ULL;
 #else
     // Default for 7600x node
-    uint64_t iterations = 20000000ULL;
+    uint64_t iterations = 2000000ULL;
 #endif
 ...
 }
