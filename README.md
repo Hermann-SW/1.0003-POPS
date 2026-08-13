@@ -161,16 +161,17 @@ Radeon-pro-vii slots=1
 
 ## deploy
 [deploy target](Makefile#L48-L49)
-```bash
-hermann@7600x:~/pops$ make deploy
+```bashhermann@7600x:~/1.0003-POPS$ make deploy
 hipcc -O3 -std=c++11 --offload-arch=gfx906 -I/usr/include/x86_64-linux-gnu/mpi -DRadeon_vii gfx906_mpi_multi_precision_bench.cpp -o gfx906_mpi_multi_precision_bench  -lmpi
+ssh Radeon-vii mkdir -p 1.0003-POPS
 scp gfx906_mpi_multi_precision_bench run_node.sh Radeon-vii:1.0003-POPS
-gfx906_mpi_multi_precision_bench                                                            100%   41KB  24.7MB/s   00:00    
-run_node.sh                                                                                 100%   61    66.1KB/s   00:00    
+gfx906_mpi_multi_precision_bench                                                                100%   41KB  27.4MB/s   00:00    
+run_node.sh                                                                                     100%   61   129.1KB/s   00:00    
 hipcc -O3 -std=c++11 --offload-arch=gfx906 -I/usr/include/x86_64-linux-gnu/mpi -DRadeon_pro_vii gfx906_mpi_multi_precision_bench.cpp -o gfx906_mpi_multi_precision_bench  -lmpi
+ssh Radeon-pro-vii mkdir -p 1.0003-POPS
 scp gfx906_mpi_multi_precision_bench run_node.sh Radeon-pro-vii:1.0003-POPS
-gfx906_mpi_multi_precision_bench                                                            100%   41KB  30.2MB/s   00:00    
-run_node.sh                                                                                 100%   61   369.0KB/s   00:00    
+gfx906_mpi_multi_precision_bench                                                                100%   41KB  28.4MB/s   00:00    
+run_node.sh                                                                                     100%   61   276.6KB/s   00:00    
 hipcc -O3 -std=c++11 --offload-arch=gfx906 -I/usr/include/x86_64-linux-gnu/mpi gfx906_mpi_multi_precision_bench.cpp -o gfx906_mpi_multi_precision_bench  -lmpi
 hermann@7600x:~/1.0003-POPS$ 
 ```
