@@ -21,7 +21,7 @@ Created with free gemini.google.com in many iterations.
 The slightly better benchmark run was achieved after executing ```sudo rocm-smi --setperflevel high``` on all three workstations. Because of ```sudo``` requiring password entry this cannot be part of [run_node.sh](run_node.sh) executed on remote workstations via mpirun.
 
 Time for combined performance is measured after last GPU finished its synthetic benchmark.  
-```sum_ops``` is sum of operations on all (10) GPUs.
+```total_system_ops``` is sum of operations on all (10) GPUs ([gfx906_mpi_multi_precision_bench.cpp](gfx906_mpi_multi_precision_bench.cpp)).
 ```cpp
 double run_mpi_benchmark_pass(int mpi_rank, int mpi_size, PrecisionMode mode, 
                               const std::string& label, uint64_t iterations, 
@@ -42,7 +42,7 @@ double run_mpi_benchmark_pass(int mpi_rank, int mpi_size, PrecisionMode mode,
     double wall_stop = MPI_Wtime();
     double wall_seconds = wall_stop - wall_start;
     ...
-    double aggregate_throughput = (sum_ops / wall_seconds) / 1e12;
+    aggregate_throughput = (total_system_ops / wall_seconds) / 1e12;
     ...
     return aggregate_throughput;
 }
