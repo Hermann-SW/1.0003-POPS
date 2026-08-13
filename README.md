@@ -18,7 +18,7 @@ Created with free gemini.google.com in many iterations.
  Combined FP16 Compute:  260.13 TFLOPS
 =============================================================================
 ```
-The slightly better benchmark run was achieved after executing ```sudo rocm-smi --setperflevel high``` on all three workstations. Because of ```sudo``` requiring password entry this cannot be part of [run_node.sh](run_node.sh) executed the remote workstations via mpirun.
+The slightly better benchmark run was achieved after executing ```sudo rocm-smi --setperflevel high``` on all three workstations. Because of ```sudo``` requiring password entry this cannot be part of [run_node.sh](run_node.sh) executed on remote workstations via mpirun.
 
 Time for combined performance is measured after last GPU finished its synthetic benchmark.  
 ```sum_ops``` is sum of operations on all (10) GPUs.
