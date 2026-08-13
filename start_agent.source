@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Check if an agent is already running and accessible
+if [ -z "$SSH_AUTH_SOCK" ] || ! kill -0 "$SSH_AGENT_PID" 2>/dev/null; then
+    eval "$(ssh-agent -s)"
+fi
+
+# Add your key
+shopt -s extglob
+ssh-add ~/.ssh/id_ed+([0-9])
