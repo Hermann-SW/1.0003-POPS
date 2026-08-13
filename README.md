@@ -62,9 +62,81 @@ int main(int argc, char** argv) {
 }
 ```
 
+## assembler verification of indeed 1 POPS INT4
+
+128 INT4 operations per iteration in C++ ...
+```cpp
+__global__ void __launch_bounds__(256, 2) mi50_int4_kernel(uint64_t iterations, int* dummy_out) {
+...
+    #pragma unroll 1
+    for (uint64_t i = 0; i < iterations; ++i) {
+        #pragma unroll
+        for (int k = 0; k < 16; ++k) {
+            acc0 = __builtin_amdgcn_sdot8(src0, src1, acc0, false);
+            acc1 = __builtin_amdgcn_sdot8(src0, src1, acc1, false);
+            acc2 = __builtin_amdgcn_sdot8(src0, src1, acc2, false);
+            acc3 = __builtin_amdgcn_sdot8(src0, src1, acc3, false);
+            acc4 = __builtin_amdgcn_sdot8(src0, src1, acc4, false);
+            acc5 = __builtin_amdgcn_sdot8(src0, src1, acc5, false);
+            acc6 = __builtin_amdgcn_sdot8(src0, src1, acc6, false);
+            acc7 = __builtin_amdgcn_sdot8(src0, src1, acc7, false);
+        }
+    }
+...
+}
+```
+
+... can be seen in disassembly, so they are not compiled out:
+```bash
+hermann@Radeon-vii:~/1.0003-POPS$ roc-obj-ls ./gfx906_mpi_multi_precision_bench 
+1       host-x86_64-unknown-linux--                                         file://./gfx906_mpi_multi_precision_bench#offset=24576&size=0
+1       hipv4-amdgcn-amd-amdhsa--gfx906                                     file://./gfx906_mpi_multi_precision_bench#offset=24576&size=8640
+hermann@Radeon-vii:~/1.0003-POPS$ roc-obj-extract "file://./gfx906_mpi_multi_precision_bench#offset=24576&size=8640"
+hermann@Radeon-vii:~/1.0003-POPS$ ls -lst | head -2
+total 60
+12 -rw-rw-r-- 1 hermann hermann  8640 Aug 13 11:04 gfx906_mpi_multi_precision_bench-offset24576-size8640.co
+hermann@Radeon-vii:~/1.0003-POPS$ /opt/rocm/llvm/bin/llvm-objdump -d --mcpu=gfx906 ./gfx906_mpi_multi_precision_bench-offset24576-size8640.co 
+
+./gfx906_mpi_multi_precision_bench-offset24576-size8640.co:	file format elf64-amdgpu
+
+Disassembly of section .text:
+
+0000000000001c00 <_Z16mi50_int4_kernelmPi>:
+	s_load_dwordx4 s[0:3], s[4:5], 0x0                         // 000000001C00: C00A0002 00000000
+...
+...                             (16*8=128× v_dot8_i32_i4)
+	v_mov_b32_e32 v9, 0                                        // 000000001C60: 7E120280
+	v_dot8_i32_i4 v9, s4, v1, v9     <-----+                   // 000000001C64: D3AA4009 1C260204
+...                                        |
+        (110× v_dot8_i32_i4)               |
+...                                        |
+	v_dot8_i32_i4 v2, s4, v1, v2           |                   // 000000001FDC: D3AA4002 1C0A0204
+	s_add_u32 s0, s0, -1                   |                   // 000000001FE4: 8000C100
+	v_dot8_i32_i4 v9, s4, v1, v9           |                   // 000000001FE8: D3AA4009 1C260204
+	v_dot8_i32_i4 v8, s4, v1, v8           |                   // 000000001FF0: D3AA4008 1C220204
+	v_dot8_i32_i4 v7, s4, v1, v7           |                   // 000000001FF8: D3AA4007 1C1E0204
+	v_dot8_i32_i4 v6, s4, v1, v6           |                   // 000000002000: D3AA4006 1C1A0204
+	v_dot8_i32_i4 v5, s4, v1, v5           |                   // 000000002008: D3AA4005 1C160204
+	v_dot8_i32_i4 v4, s4, v1, v4           |                   // 000000002010: D3AA4004 1C120204
+	v_dot8_i32_i4 v3, s4, v1, v3           |                   // 000000002018: D3AA4003 1C0E0204
+	v_dot8_i32_i4 v2, s4, v1, v2           |                   // 000000002020: D3AA4002 1C0A0204
+	s_addc_u32 s1, s1, -1                  |                   // 000000002028: 8201C101
+	v_dot8_i32_i4 v9, s4, v1, v9           |                   // 00000000202C: D3AA4009 1C260204
+	v_dot8_i32_i4 v8, s4, v1, v8           |                   // 000000002034: D3AA4008 1C220204
+	v_dot8_i32_i4 v7, s4, v1, v7           |                   // 00000000203C: D3AA4007 1C1E0204
+	v_dot8_i32_i4 v6, s4, v1, v6           |                   // 000000002044: D3AA4006 1C1A0204
+	v_dot8_i32_i4 v5, s4, v1, v5           |                   // 00000000204C: D3AA4005 1C160204
+	v_dot8_i32_i4 v4, s4, v1, v4           |                   // 000000002054: D3AA4004 1C120204
+	v_dot8_i32_i4 v3, s4, v1, v3           |                   // 00000000205C: D3AA4003 1C0E0204
+	s_cmp_lg_u64 s[0:1], 0                 |                   // 000000002064: BF138000
+	v_dot8_i32_i4 v2, s4, v1, v2           |                   // 000000002068: D3AA4002 1C0A0204  
+	s_cbranch_scc1 65276             ------+                   // 000000002070: BF85FEFC <_Z16mi50_int4_kernelmPi+0x64>
+...
+hermann@Radeon-vii:~/1.0003-POPS$
+```
 
 ## start ssh-agent
-For password-less copying and mpirun. 
+For password-less copying and mpirun: [start_agent.source](start_agent.source)
 ```bash
 hermann@7600x:~$ cd 1.0003-POPS/
 hermann@7600x:~/1.0003-POPS$ source start_agent.source 
@@ -88,6 +160,7 @@ Radeon-pro-vii slots=1
 ```
 
 ## deploy
+[deploy target](Makefile#L48-L49)
 ```bash
 hermann@7600x:~/pops$ make deploy
 hipcc -O3 -std=c++11 --offload-arch=gfx906 -I/usr/include/x86_64-linux-gnu/mpi -DRadeon_vii gfx906_mpi_multi_precision_bench.cpp -o gfx906_mpi_multi_precision_bench  -lmpi
@@ -103,6 +176,7 @@ hermann@7600x:~/1.0003-POPS$
 ```
 
 ## mpirun
+[mpirun target](Makefile#L67-L69)
 ```bash
 hermann@7600x:~/1.0003-POPS$ make mpirun
 mpirun --mca btl_tcp_if_include 192.168.178.0/24 -np 3 --hostfile cluster_hosts ./run_node.sh ./gfx906_mpi_multi_precision_bench
