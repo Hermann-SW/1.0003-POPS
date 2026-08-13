@@ -163,7 +163,8 @@ Radeon-pro-vii slots=1
 
 ## deploy
 [deploy target](Makefile#L48-L49)
-```bashhermann@7600x:~/1.0003-POPS$ make deploy
+```bash
+hermann@7600x:~/1.0003-POPS$ make deploy
 hipcc -O3 -std=c++11 --offload-arch=gfx906 -I/usr/include/x86_64-linux-gnu/mpi -DRadeon_vii gfx906_mpi_multi_precision_bench.cpp -o gfx906_mpi_multi_precision_bench  -lmpi
 ssh Radeon-vii mkdir -p 1.0003-POPS
 scp gfx906_mpi_multi_precision_bench run_node.sh Radeon-vii:1.0003-POPS
