@@ -8,6 +8,7 @@
 Created with free gemini.google.com in many iterations.
 
 ## summary
+(for comparison, a single NVIDIA RTX5060 with its tensor cores can [show 279.12 TOPS INT4](https://gist.github.com/Hermann-SW/0789f35fe30da1a17e5751e5edf4ac9b?permalink_comment_id=6291600#gistcomment-6291600))
 ```
 =============================================================================
                    TOTAL 10-GPU CLUSTER PERFORMANCE                          
