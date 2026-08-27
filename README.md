@@ -149,7 +149,7 @@ hermann@7600x:~/1.0003-POPS$
 ```
 
 ## cluster 
-- [8× Instinct MI50 (on 7600x workstation)](8xMI50.png)  
+- [8× Instinct MI50 (on 7600x workstation)](8xMI50.png) with Riser cards    
   ([rebuilt with only 32GB MI50 inside in x16 PCIe slot, other 7 are 16GB models](IMG_20260820_231123_MP.part.2.33pc.jpg))  
   internal 2000W PSU and external 1850W PSU are connected with SATA Dual PSU adapter
 - 1× GPU (on Radeon-vii workstation)
