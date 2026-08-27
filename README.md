@@ -149,7 +149,7 @@ hermann@7600x:~/1.0003-POPS$
 ```
 
 ## cluster 
-- [8× Instinct MI50 (on 7600x)](https://media.printables.com/media/prints/1229329/rich_content/276cc0e3-cb78-4b6d-a263-fb68554d0c32/image.png)
+- [8× Instinct MI50 (on 7600x)](IMG_20260820_231123_MP.part.2.33pc.jpg) ([rebuilt with only 32GB MI50 inside in x16 PCIe slot](8xMI50.png))
 - 1× GPU (on Radeon-vii)
 - 1× GPU (on Radeon-pro-vii)
 
