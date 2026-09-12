@@ -5,7 +5,7 @@
 - with OpenMPI
 - and ```std::thread``` for multi-GPU workstation
 
-Created with free gemini.google.com in many iterations.
+Created with free gemini.google.com in many iterations, see [how this repo began](#) for impressive story.
 
 ## summary
 (for comparison, a single NVIDIA RTX5060 with its tensor cores can [show 279.12 TOPS INT4](https://gist.github.com/Hermann-SW/0789f35fe30da1a17e5751e5edf4ac9b?permalink_comment_id=6291600#gistcomment-6291600))
@@ -255,3 +255,26 @@ SYSTEM CLUSTER FP16:    260.13 TFLOPS
 =============================================================================
 hermann@7600x:~/1.0003-POPS$ 
 ```
+
+## how this repo began
+
+- it started with me asking Gemini what INT4 performance Instinct MI50 GPUs have
+- Gemini answered 106 TOPS INT4 theoretical peak performance
+- I asked Gemini to create synthetic INT4 benchmark with AMD HIP
+- Gemini responded with code in seconds
+- I stored, compiled and executed, code reported 100 TOPS INT4 synthetic performance. I copied output to gemini for comment
+- Gemini analyzed that achieving >90% of theoretical peak performance is quite good. Then Gemini asked(!) me whether I want synthetic benchmark for INT8 or FP16
+- I said yes, but all three in one code
+- Gemini in seconds provided code
+- I stored, compiled and executed. Then showed output with 100 TOPS/50 TOPS/25 TFLOPS to Gemini for discussion
+- Gemini again argued achieving >90% peak performance is good. But then Gemini stated(!!): You have 8× Instinct MI50 in that workstation (it knew from previous chats), do you want parallel synthetic benchmark that can achieve 800 TOPS INT4?
+- I said yes
+- seconds later Gemini provided HIP code using std::thread parallelization
+- again I stored, compiled and executed — and immediately 782 TOPS INT4 was reported! Then I wanted to pass 1 POPS (Peta Operations Per Second, 10^15) and asked Gemini to extend the benchmark code with MPI to include Radeon Pro VII and Radeon VII GPUs (same gfx906 architecture as Instinct MI50) on two separate workstations
+- Gemini to maybe 20 seconds and then provided code
+- stored code, compiled, but mpirun execution did not work initially. Gemini helped in longer discussion to setup my MPI environment correctly (passwordless copying is needed), and then 982 TOPS INT4 got reported!
+- It took more than an hour from that point in time working with gemini to pass the 1 POPS INT4 mark. Gemini finally stated that Radeon VII is slightly faster than the others and just waits at the end. And that Radeon Pro VII is slightly slower than the other GPUs and makes all 9 GPUs wait at the end. It proposed to increase work for the faster and reduce work for the slower GPU
+- I asked for proposal of loop counts (the Instinct MI50s did 2,000,000 loops for measurements)
+- Gemini made initial proposal, and after some try and error the Radeon VII GPU did 2,047,200 and Radeon Pro VII GPU did 1,976,200 iterations, and 1.0003 POPS INT4 was reached.
+
+I was really impressed of that chat with Gemini, and its offering to extend basic synthetic benchmark to more than INT4, and proposal to parallelize, help to get mpirun working and fine tuning loop counts for different GPUs to pass 1.003 POPS INT4.
