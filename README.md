@@ -259,7 +259,7 @@ hermann@7600x:~/1.0003-POPS$
 ## how this repo began
 
 - it started with me asking Gemini what INT4 performance Instinct MI50 GPUs have
-- Gemini answered 106 TOPS INT4 theoretical peak performance
+- Gemini answered 106 TOPS INT4 (Tera Operations Per Second, 10^12) theoretical peak performance
 - I asked Gemini to create synthetic INT4 benchmark with AMD HIP
 - Gemini responded with code in seconds
 - I stored, compiled and executed, code reported 100 TOPS INT4 synthetic performance. I copied output to gemini for comment
