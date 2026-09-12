@@ -271,7 +271,7 @@ hermann@7600x:~/1.0003-POPS$
 - I said yes
 - seconds later Gemini provided HIP code using std::thread parallelization
 - again I stored, compiled and executed — and immediately 782 TOPS INT4 was reported! Then I wanted to pass 1 POPS (Peta Operations Per Second, 10^15) and asked Gemini to extend the benchmark code with MPI to include Radeon Pro VII and Radeon VII GPUs (same gfx906 architecture as Instinct MI50) on two separate workstations
-- Gemini to maybe 20 seconds and then provided code
+- Gemini took maybe 20 seconds and then provided code
 - stored code, compiled, but mpirun execution did not work initially. Gemini helped in longer discussion to setup my MPI environment correctly (passwordless copying is needed), and then 982 TOPS INT4 got reported!
 - It took more than an hour from that point in time working with gemini to pass the 1 POPS INT4 mark. Gemini finally stated that Radeon VII is slightly faster than the others and just waits at the end. And that Radeon Pro VII is slightly slower than the other GPUs and makes all 9 GPUs wait at the end. It proposed to increase work for the faster and reduce work for the slower GPU
 - I asked for proposal of loop counts (the Instinct MI50s did 2,000,000 loops for measurements)
